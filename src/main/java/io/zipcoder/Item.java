@@ -16,7 +16,7 @@ public class Item {
      * @param expiration
      */
     public Item(String name, Double price, String type, String expiration){
-        this.name = name;
+        this.name = name.toLowerCase().replaceAll("[0-9]","o");
         this.price = price;
         this.type = type;
         this.expiration = expiration;
