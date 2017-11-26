@@ -94,4 +94,5 @@ public class ItemParserTest {
         System.out.println(itemParser.toCountPrice(doubles));
 
     }
+
 }

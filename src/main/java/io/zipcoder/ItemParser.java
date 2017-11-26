@@ -5,16 +5,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ItemParser {
-    private int count;
-    private static final Logger logger = Logger.getGlobal();
-
-    public int getCount() {
+    public int count;
+    public int getCount(){
         return count;
     }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
+    private static final Logger logger = Logger.getGlobal();
 
     public ArrayList<String> parseRawDataIntoStringArray(String rawData){
         String stringPattern = "##";
@@ -33,11 +28,8 @@ public class ItemParser {
             String msg="Not a valid Item";
             logger.log(Level.SEVERE,msg);
             count++;
-            setCount(count);
             return null;
         }
-
-
     }
 
     public ArrayList<String> findKeyValuePairsInRawItemData(String rawItem){
@@ -66,6 +58,7 @@ public class ItemParser {
             }catch (ArrayIndexOutOfBoundsException e){
                 // String message = "not a valid string";
                 //logger.log(Level.SEVERE,message);
+                count++;
             }
 
 
@@ -130,6 +123,29 @@ public class ItemParser {
             }
         }
         return map;
+    }
+    public void finalOutput(Map<String,ArrayList<Double>> map){
+        Map<Double,Integer> priceMap = null;
+        String specifiers = "%-10s %-9s %-2s %-2d %-2s%n";
+        int itemCount = 0;
+        for (Map.Entry<String,ArrayList<Double>> entry:map.entrySet()) {
+            String key = entry.getKey().substring(0,1).toUpperCase()+entry.getKey().substring(1);
+            ArrayList<Double> value = entry.getValue();
+            priceMap = toCountPrice(value);
+            itemCount = value.size();
+            //System.out.println("Name : "+key+"        seen "+itemCount);
+
+            System.out.format(specifiers, "Name  : ", key,"seen:",itemCount,"times");
+            System.out.println("===================================");
+
+            for (Map.Entry<Double,Integer> entry1: priceMap.entrySet()) {
+                Double priceKey = entry1.getKey();
+                Integer priceCount = entry1.getValue();
+                System.out.println("Price :    "+priceKey+"      seen: "+priceCount);
+                System.out.println("-----------------------------------");
+            }
+        }
+        System.out.println("Errors seen :"+getCount()+"  times");
     }
 
 }
